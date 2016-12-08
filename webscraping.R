@@ -22,7 +22,7 @@ kns <- c("kn-sc", "kn-sd", "kn-se", "kn-sf", "kn-sg", "kn-sk", "kn-so", "kn-sp")
 knu <- c("kn-uc", "kn-uf", "kn-u")
 knv <- c("kn-vc", "kn-vd", "kn-v")
 knw <- c("kn-wb", "kn-wm", "kn-wn", "kn-ws")
-knx <- c("kn-xd", "kn-xe", "km-xf", "kn-x")
+knx <- c("kn-xd", "kn-xe", "kn-xf", "kn-x")
 
 #urls <- c("kn-a", "kn-b-2", "kn-c-3", "kn-d-2", "kn-e", "kn-f", "kn-g", "kn-k", "kn-l", "kn-m", "kn-n", "kn-o", "kn-pp", "kn-r-2",
 #          "kn-s", "kn-u", "kn-v", "kn-w", "kn-x")
@@ -37,25 +37,25 @@ tablets<-c()
 for(url in urls)
 {
   fullurl = paste(paste("http://minoan.deaditerranean.com/linear-b-transliterations/knossos/", url, sep=""), "/", sep="")
-  
+  print(fullurl)
   website <- html(fullurl)
   
   # gets title of the tablets
-  website %>%
+  title <- website %>%
     html_nodes("h2") %>%
     html_text()
   
   # gets text from the tablets
-  raw_data = website %>%
+  raw_data <- website %>%
     html_nodes("p") %>%
     html_text()
   
-  tablets = vector <- c()
-  
   for (data in raw_data) {
-    if(!(grepl(":", data)) && grepl("-[a-z]", data)) {
+    if(grepl("-[a-z]", data)) {
       tablets <- c(tablets, data)
     }
   }
   
 }
+
+write.csv(tablets, file = "data.csv")
