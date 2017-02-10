@@ -116,9 +116,29 @@ public class FileManager {
     {
         ArrayList<Entry> list;
         try {
-            FileInputStream fileIn = new FileInputStream("C:\\Users\\Katie\\Documents\\Jsoup\\words.ser");
+            FileInputStream fileIn = new FileInputStream("D:\\Documents\\University\\Year 3\\FYP\\LinearB-Decipherment\\Jsoup\\words.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             list = (ArrayList<Entry>) in.readObject();
+            in.close();
+            fileIn.close();
+        }catch(IOException i) {
+            i.printStackTrace();
+            return null;
+        }catch(ClassNotFoundException c) {
+            System.out.println("Employee class not found");
+            c.printStackTrace();
+            return null;
+        }
+        return list;
+    }
+
+    public ArrayList<Tablet> getTabletsFromFile()
+    {
+        ArrayList<Tablet> list;
+        try {
+            FileInputStream fileIn = new FileInputStream("D:\\Documents\\University\\Year 3\\FYP\\LinearB-Decipherment\\Jsoup\\tablets.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            list = (ArrayList<Tablet>) in.readObject();
             in.close();
             fileIn.close();
         }catch(IOException i) {

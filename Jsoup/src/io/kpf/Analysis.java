@@ -36,15 +36,15 @@ public class Analysis {
         System.out.println(" Anthropnyms: " + nameCount);
         System.out.println(" Toponyms: " + locCount);
     }
-    
-    public ArrayList<ArrayList<String>> spiltWords(ArrayList<Entry> entries){
+
+    public ArrayList<ArrayList<String>> spiltWords(ArrayList<Inflection> inflections){
         ArrayList<ArrayList<String>> returnList = new ArrayList<ArrayList<String>>();
-        for (Entry entry : entries)
-        {
-            ArrayList<String> characters = new ArrayList<String>(Arrays.asList(entry.word.split("-")));
-            returnList.add(characters);
+        for (Inflection inflection : inflections) {
+            for (String word: inflection.words) {
+                ArrayList<String> characters = new ArrayList<String>(Arrays.asList(word.split("-")));
+                returnList.add(characters);
+            }
         }
-        
         return returnList;
     }
     
@@ -80,6 +80,7 @@ public class Analysis {
     
     public ArrayList<CharacterCount> findCommonPrefixes(ArrayList<ArrayList<String>> returnList)
     {
+        int counta = 0;
         ArrayList<CharacterCount> result = new ArrayList<CharacterCount>();
         result.add(new CharacterCount("test"));
 
@@ -88,6 +89,20 @@ public class Analysis {
             boolean flag = false;
             String firstChar = characters.get(0);
             CharacterCount characterCount = new CharacterCount(firstChar);
+
+            System.out.println("Word");
+            for (String s: characters
+                 ) {
+                System.out.print(s + " ");
+            }
+            System.out.println();
+
+            System.out.println("Starting character: " + firstChar);
+            
+            if(firstChar.equals("a"))
+            {
+                counta++;
+            }
 
             for (CharacterCount cCount: result) {
                 if(characterCount.value.equals(cCount.value))
@@ -105,6 +120,7 @@ public class Analysis {
             }
         }
 
+        System.out.println(counta);
         return result;
     }
 
@@ -131,6 +147,48 @@ public class Analysis {
                     result.add(characterCount);
                 }
             }            
+        }
+
+        return result;
+    }
+
+    public ArrayList<CharacterCount2> doEverything(ArrayList<ArrayList<String>> returnList)
+    {
+        ArrayList<CharacterCount2> result = new ArrayList<CharacterCount2>();
+        result.add(new CharacterCount2("test"));
+
+        for (ArrayList<String> word : returnList)
+        {
+            for (int i = 0; i < word.size(); i++) {
+                CharacterCount2 characterCount = new CharacterCount2(word.get(i));
+                boolean alreadyInList = false;
+
+                for (CharacterCount2 cCount : result) {
+                    if(characterCount.value.equals(cCount.value))
+                    {
+                        alreadyInList = true;
+                        characterCount = cCount;
+                    }
+                }
+                characterCount.total++;
+                
+                // word is at the start of the list
+                if(i == 0)
+                {
+                    characterCount.start++;
+                } else if(i == word.size()-1)
+                {
+                    characterCount.end++;
+                }
+                else {
+                    characterCount.middle++;
+                }
+                
+
+                if (!alreadyInList) {
+                    result.add(characterCount);
+                }
+            }
         }
 
         return result;
